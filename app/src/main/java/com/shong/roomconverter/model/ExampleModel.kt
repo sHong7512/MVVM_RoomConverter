@@ -1,4 +1,5 @@
-package com.shong.roomconverter
+package com.shong.roomconverter.model
+
 
 data class ExampleModel(
     var user: User,

@@ -1,4 +1,4 @@
-package com.shong.roomconverter
+package com.shong.roomconverter.ui
 
 import android.app.Application
 import android.util.Log
@@ -7,15 +7,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shong.roomconverter.data.Repository
 import com.shong.roomconverter.data.db.entity.ExampleEntity
+import com.shong.roomconverter.model.ExampleModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(val repository: Repository, app : Application) : AndroidViewModel(app) {
-    private val TAG = this::class.java.simpleName+"_sHong"
+    private val TAG = this::class.java.simpleName + "_sHong"
 
-    internal val insertUpdateCuOk: MutableLiveData<Boolean> = MutableLiveData()
+    internal val insertUpdateExOk: MutableLiveData<Boolean> = MutableLiveData()
     internal fun insertExampleEntity(idMap: Map<Int, ExampleModel?>){
         viewModelScope.launch{
             var cnt = 0
@@ -28,7 +29,7 @@ class MainViewModel @Inject constructor(val repository: Repository, app : Applic
                     cnt += updateExampleEntity(ex)
                 }
             }
-            insertUpdateCuOk.value = (idMap.size == cnt)
+            insertUpdateExOk.value = (idMap.size == cnt)
         }
     }
 
@@ -37,7 +38,7 @@ class MainViewModel @Inject constructor(val repository: Repository, app : Applic
             repository.updateExampleEntity(ex)
             return 1
         }catch (e: Exception){
-            Log.d(TAG,"[insertCU & updateCU] $e")
+            Log.d(TAG,"[insertEx & updateEx] $e")
             return 0
         }
     }
@@ -52,7 +53,7 @@ class MainViewModel @Inject constructor(val repository: Repository, app : Applic
             try{
                 selectExampleEntityLD.value = ExampleEntity_nullable(id, repository.selectExampleEntity(id).exampleModel)
             }catch (e: Exception){
-                Log.d(TAG,"[selectCU] $e")
+                Log.d(TAG,"[selectEx] $e")
                 selectExampleEntityLD.value = ExampleEntity_nullable(id, null)
             }
         }
@@ -70,7 +71,7 @@ class MainViewModel @Inject constructor(val repository: Repository, app : Applic
                 getAllExampleEntityLD.value = map
             }catch (e: Exception){
                 getAllExampleEntityLD.value = null
-                Log.d(TAG,"[getAllCU] $e")
+                Log.d(TAG,"[getAllEx] $e")
             }
         }
     }
@@ -83,7 +84,7 @@ class MainViewModel @Inject constructor(val repository: Repository, app : Applic
                 nukeExampleEntityLD.value = true
             }catch (e: Exception){
                 nukeExampleEntityLD.value = false
-                Log.d(TAG,"[nukeCU] $e")
+                Log.d(TAG,"[nukeEx] $e")
             }
         }
     }

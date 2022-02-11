@@ -2,7 +2,7 @@ package com.shong.roomconverter.data.db
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.shong.roomconverter.ExampleModel
+import com.shong.roomconverter.model.ExampleModel
 
 class Converters {
     companion object{

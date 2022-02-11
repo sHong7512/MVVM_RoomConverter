@@ -1,10 +1,13 @@
-package com.shong.roomconverter
+package com.shong.roomconverter.ui
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.shong.roomconverter.databinding.ActivityMainBinding
+import com.shong.roomconverter.model.Contact
+import com.shong.roomconverter.model.ExampleModel
+import com.shong.roomconverter.model.User
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun makeObserver(){
-        viewModel.insertUpdateCuOk.observe(this,{
+        viewModel.insertUpdateExOk.observe(this,{
             it?.let { Log.d(TAG,"Insert Or Update $it") }
         })
         viewModel.selectExampleEntityLD.observe(this, {

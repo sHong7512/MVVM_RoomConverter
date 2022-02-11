@@ -10,7 +10,7 @@ class Repository constructor(
     private val context: Context,
     private val exampleDao: ExampleDao
 ) {
-    val TAG = this::class.java.simpleName
+    val TAG = this::class.java.simpleName + "_sHong"
 
     suspend fun insertExampleEntity(cu: ExampleEntity){
         withContext(Dispatchers.IO){
