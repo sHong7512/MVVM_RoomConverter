@@ -1,33 +1,31 @@
-package com.shong.roomconverter.data
+package com.shong.roomconverter.repository
 
-import android.content.Context
-import com.shong.roomconverter.data.db.dao.ExampleDao
-import com.shong.roomconverter.data.db.entity.ExampleEntity
+import com.shong.roomconverter.db.example.ExampleDao
+import com.shong.roomconverter.db.example.ExampleEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class Repository constructor(
-    private val context: Context,
+class ExampleRepository constructor(
     private val exampleDao: ExampleDao
-) {
-    val TAG = this::class.java.simpleName + "_sHong"
+): Repository {
+    override val TAG = this::class.java.simpleName + "_sHong"
 
-    suspend fun insertExampleEntity(cu: ExampleEntity){
+    suspend fun insertExampleEntity(ex: ExampleEntity){
         withContext(Dispatchers.IO){
-            exampleDao.insertEx(cu)
+            exampleDao.insertEx(ex)
         }
     }
 
-    suspend fun updateExampleEntity(cu: ExampleEntity){
+    suspend fun updateExampleEntity(ex: ExampleEntity){
         withContext(Dispatchers.IO){
-            exampleDao.updateEx(cu)
+            exampleDao.updateEx(ex)
         }
     }
 
-    suspend fun selectExampleEntity(viewSeq: Int): ExampleEntity {
+    suspend fun selectExampleEntity(id: Int): ExampleEntity {
         val result: ExampleEntity
         withContext(Dispatchers.IO){
-            result = exampleDao.selectEx(viewSeq)
+            result = exampleDao.selectEx(id)
         }
         return result
     }

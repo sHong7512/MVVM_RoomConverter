@@ -1,10 +1,10 @@
-package com.shong.roomconverter.data.db.dao
+package com.shong.roomconverter.db.example
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.shong.roomconverter.data.db.entity.ExampleEntity
+import com.shong.roomconverter.db.example.ExampleEntity
 
 @Dao
 interface ExampleDao {

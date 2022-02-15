@@ -4,60 +4,59 @@ import android.app.Application
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.shong.roomconverter.repository.ExampleRepository
-import com.shong.roomconverter.db.example.ExampleEntity
-import com.shong.roomconverter.model.ExampleModel
-import com.shong.roomconverter.util.MillisConverter
+import com.shong.roomconverter.db.example2.ExampleEntity2
+import com.shong.roomconverter.repository.ExampleRepository2
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: ExampleRepository, app : Application) : AndroidViewModel(app) {
+class MainViewModel2 @Inject constructor(private val repository: ExampleRepository2, app : Application) : AndroidViewModel(app) {
     private val TAG = this::class.java.simpleName+"_sHong"
 
-    @Inject lateinit var millisConverter: MillisConverter
-    val titleText: ObservableField<String> = ObservableField("<Room Converter Example>")
+    val titleText: ObservableField<String> = ObservableField("<Room Converter Example2>")
     val resultText: ObservableField<String> = ObservableField("")
     val idText: ObservableField<String> = ObservableField("")
-    val nameText: ObservableField<String> = ObservableField("")
+    val strText1: ObservableField<String> = ObservableField("")
+    val strText2: ObservableField<String> = ObservableField("")
 
     fun insert(){
         val idBuf = idText.get() ?: return
         try {
-            insertExampleEntity(idBuf.toInt(),nameText.get() ?: "<NoName>", System.currentTimeMillis())
+            insertExampleEntity(idBuf.toInt(),strText1.get() ?: "<NoStr>", strText2.get() ?: "<NoStr>")
         } catch (e: Exception) {
             resultText.set("[InsertButton] ${e.localizedMessage}")
             Log.d(TAG, "[InsertButton] Id Error: $e")
         } finally {
             idText.set("")
-            nameText.set("")
+            strText1.set("")
+            strText2.set("")
         }
     }
 
     fun update(){
         val idBuf = idText.get() ?: return
         try {
-            updateExampleEntity(idBuf.toInt(),nameText.get() ?: "<NoName>", System.currentTimeMillis())
+            updateExampleEntity(idBuf.toInt(),strText1.get() ?: "<NoStr>", strText2.get() ?: "<NoStr>")
         } catch (e: Exception) {
             resultText.set("[InsertButton] ${e.localizedMessage}")
             Log.d(TAG, "[InsertButton] Id Error: $e")
         } finally {
             idText.set("")
-            nameText.set("")
+            strText1.set("")
+            strText2.set("")
         }
     }
 
     fun getAllData(){
         viewModelScope.launch{
             try{
-                val items = repository.getAllExampleEntity()
+                val items = repository.getAllExampleEntity2()
 
                 var str = "<DB>\n"
-                for (ex in items)
-                    str += "[id: ${ex.id} name: ${ex.exampleModel.name} ${millisConverter.millisToTime(ex.exampleModel.timeMillis)}]\n"
+                for (ex2 in items)
+                    str += "[id: ${ex2.id} strList: ${ex2.stringList}]\n"
                 resultText.set(str)
 
             }catch (e: Exception){
@@ -70,7 +69,7 @@ class MainViewModel @Inject constructor(private val repository: ExampleRepositor
     fun nukeData(){
         viewModelScope.launch{
             try{
-                repository.nukeExampleEntity()
+                repository.nukeExampleEntity2()
                 resultText.set("[NukeEx] All Clear Ok")
             }catch (e: Exception){
                 resultText.set("[NukeEx] ${e.localizedMessage}")
@@ -79,16 +78,11 @@ class MainViewModel @Inject constructor(private val repository: ExampleRepositor
         }
     }
 
-    internal val goExSecondLD: MutableLiveData<Unit> = MutableLiveData()
-    fun goExampleSecond(){
-        goExSecondLD.value = Unit
-    }
-
-    private fun insertExampleEntity(id: Int, name: String, millis: Long){
+    private fun insertExampleEntity(id: Int, str1: String, str2: String){
         viewModelScope.launch{
-            val ex = ExampleEntity(id, ExampleModel(name = name, timeMillis=millis, null, null))
+            val ex2 = ExampleEntity2(id, listOf(str1,str2))
             try{
-                repository.insertExampleEntity(ex)
+                repository.insertExampleEntity2(ex2)
                 resultText.set("[InsertEx] Insert Data Ok")
             }catch (e: Exception){
                 resultText.set("[InsertEx] ${e.localizedMessage}")
@@ -97,11 +91,11 @@ class MainViewModel @Inject constructor(private val repository: ExampleRepositor
         }
     }
 
-    private fun updateExampleEntity(id: Int, name: String, millis: Long){
+    private fun updateExampleEntity(id: Int, str1: String, str2: String){
         viewModelScope.launch{
-            val ex = ExampleEntity(id, ExampleModel(name = name, timeMillis=millis, null, null))
+            val ex2 = ExampleEntity2(id, listOf(str1,str2))
             try{
-                repository.updateExampleEntity(ex)
+                repository.updateExampleEntity2(ex2)
                 resultText.set("[InsertEx] Insert Data Ok")
             }catch (e: Exception){
                 resultText.set("[InsertEx] ${e.localizedMessage}")

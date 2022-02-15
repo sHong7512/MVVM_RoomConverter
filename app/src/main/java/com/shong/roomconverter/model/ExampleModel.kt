@@ -2,15 +2,10 @@ package com.shong.roomconverter.model
 
 
 data class ExampleModel(
-    var user: User,
+    var name: String,
     var timeMillis: Long,
     var friend: Friend?,
     var contact: Contact?
-)
-
-data class User(
-    var name : String,
-    var americanAge : Int?,
 )
 
 data class Contact(
@@ -19,6 +14,6 @@ data class Contact(
 )
 
 data class Friend(
-    var user: User,
+    var name: String,
     var contact: Contact?
 )
